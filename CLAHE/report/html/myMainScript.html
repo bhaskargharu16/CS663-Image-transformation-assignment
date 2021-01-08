@@ -1,0 +1,544 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-09-01"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">myMainScript</a></li><li><a href="#2">Reading images</a></li><li><a href="#3">(a) ForegroundMask</a></li><li><a href="#6">(b) Linear Contrast Stretching</a></li><li><a href="#7">1.</a></li><li><a href="#9">2.</a></li><li><a href="#11">3.</a></li><li><a href="#13">5.</a></li><li><a href="#15">6.</a></li><li><a href="#17">7.</a></li><li><a href="#19">(c) Histogram Equalization</a></li><li><a href="#20">1.</a></li><li><a href="#22">2.</a></li><li><a href="#24">3.</a></li><li><a href="#26">5.</a></li><li><a href="#28">6.</a></li><li><a href="#30">7.</a></li><li><a href="#32">(d) Histogram Matching</a></li><li><a href="#37">(e) Contrast-Limited Adaptive Histogram Equalization (CLAHE)</a></li><li><a href="#38">extracting results using fine tuned parameters</a></li><li><a href="#39">The original image1 (barbara.png)</a></li><li><a href="#40">The Clahed image1 (barbara.png)</a></li><li><a href="#41">The original image2 (TEM.png)</a></li><li><a href="#42">The Clahed  image2 (TEM.png)</a></li><li><a href="#43">The original image3 (canyon.png)</a></li><li><a href="#44">The Clahed image3 (canyon.png)</a></li><li><a href="#45">The original image6 (chestXray.png)</a></li><li><a href="#46">The Clahed image6 (chestXray.png)</a></li><li><a href="#47">Extracting results after varying Window Size parameter</a></li><li><a href="#48">image1 with window size 100 (barbara.png)</a></li><li><a href="#49">image1 with window size 100 (barbara.png)</a></li><li><a href="#50">image2 with window size 10 (TEM.png)</a></li><li><a href="#51">image2 with window size 100 (TEM.png)</a></li><li><a href="#52">image3 with window size 10 (canyon.png)</a></li><li><a href="#53">image3 with window size 100 (canyon.png)</a></li><li><a href="#54">image6 with window size 10 (chestXray.png)</a></li><li><a href="#55">image6 with window size 10 (chestXray.png)</a></li><li><a href="#56">Observation for variation of window size parameter</a></li><li><a href="#57">Extracting results for histogram threshold variation</a></li><li><a href="#58">image1 with histogram threshold 0.1 (barbara.png)</a></li><li><a href="#59">image1 with histogram threshold 0.05 (barbara.png)</a></li><li><a href="#60">image2 with histogram threshold 0.1 (TEM.png)</a></li><li><a href="#61">image2 with histogram threshold 0.05 (TEM.png)</a></li><li><a href="#62">image3 with histogram threshold 0.1 (canyon.png)</a></li><li><a href="#63">image3 with histogram threshold 0.05 (canyon.png)</a></li><li><a href="#64">image6 with histogram threshold 0.1 (chestXray.png)</a></li><li><a href="#65">image6 with histogram threshold 0.05 (chestXray.png)</a></li><li><a href="#66">Observations for variation of histogram threshold</a></li><li><a href="#67">THE END</a></li></ul></div><h2 id="1">myMainScript</h2><pre class="codeinput">clear;
+myNumOfColors = 255;
+myColorScale = [ [0:1/(myNumOfColors-1):1]',[0:1/(myNumOfColors-1):1]' , [0:1/(myNumOfColors-1):1]' ];
+</pre><h2 id="2">Reading images</h2><pre class="codeinput">im1 = imread(<span class="string">'../data/barbara.png'</span>);
+im2 = imread(<span class="string">'../data/TEM.png'</span>);
+im3 = imread(<span class="string">'../data/canyon.png'</span>);
+im4 = imread(<span class="string">'../data/retina.png'</span>);
+im5 = imread(<span class="string">'../data/church.png'</span>);
+im6 = imread(<span class="string">'../data/chestXray.png'</span>);
+im7 = imread(<span class="string">'../data/statue.png'</span>);
+im_ref= imread(<span class="string">'../data/retinaRef.png'</span>);
+</pre><h2 id="3">(a) ForegroundMask</h2><p>Threshhold intensity = 8</p><pre class="codeinput">[fore_img, fore_img1 ,masked_img,masked_img1] = myForegroundMask(im7,8);
+</pre><pre class="codeinput">subplot(1,3,1);
+imagesc(single(im7),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,3,2);
+imagesc(single(fore_img),[0,255]), title(<span class="string">'Binary Mask'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,3,3);
+imagesc(single(fore_img1),[0,255]), title(<span class="string">'Binary Mask(with Noise reduction)'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <pre class="codeinput">subplot(1,2,1);
+imagesc(single(masked_img),[0,255]), title(<span class="string">'Masked Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(single(masked_img1),[0,255]), title(<span class="string">'Masked Image with different background'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="6">(b) Linear Contrast Stretching</h2><pre class="codeinput"><span class="comment">%Formula</span>
+</pre><h2 id="7">1.</h2><pre class="codeinput">[cont_img1] = myLinearContrastStretching(im1);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(single(im1),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(single(cont_img1),[0,255]), title(<span class="string">'Contrast-Enhanced Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <h2 id="9">2.</h2><pre class="codeinput">[cont_img2] = myLinearContrastStretching(im2);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(im2,[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(cont_img2,[0,255]), title(<span class="string">'Contrast-Enhanced Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2 id="11">3.</h2><pre class="codeinput">[cont_img3] = myLinearContrastStretching(im3);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(im3,[0,255]), title(<span class="string">'Original Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+subplot(1,2,2);
+imagesc(mat2gray(cont_img3),[0,255]), title(<span class="string">'Contrast-Enhanced Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <h2 id="13">5.</h2><pre class="codeinput">[cont_img5] = myLinearContrastStretching(im5);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(im5,[0,255]), title(<span class="string">'Original Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+subplot(1,2,2);
+imagesc(mat2gray(cont_img5),[0,255]), title(<span class="string">'Contrast-Enhanced Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2 id="15">6.</h2><pre class="codeinput">[cont_img6] = myLinearContrastStretching(im6);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(single(im6),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(single(cont_img6),[0,255]), title(<span class="string">'Contrast-Enhanced Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <h2 id="17">7.</h2><pre class="codeinput">[P,Q,R,S,BinaryMask] = myForegroundMask(im7,15);
+masked = uint8(im7 .* BinaryMask);
+[cont_img7] = myLinearContrastStretching(masked);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(single(masked),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(single(cont_img7),[0,255]), title(<span class="string">'Contrast-Enhanced Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <h2 id="19">(c) Histogram Equalization</h2><h2 id="20">1.</h2><pre class="codeinput">[Hist_img1] = myHE(im1);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(single(im1),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(single(Hist_img1),[0,255]), title(<span class="string">'Histogram-Equalized Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <h2 id="22">2.</h2><pre class="codeinput">[Hist_img2] = myHE(im2);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(single(im2),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(single(Hist_img2),[0,255]), title(<span class="string">'Histogram-Equalized Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <h2 id="24">3.</h2><pre class="codeinput">[Hist_img3] = myHE(im3);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(im3,[0,255]), title(<span class="string">'Original Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+subplot(1,2,2);
+imagesc(mat2gray(Hist_img3),[0,255]), title(<span class="string">'Histogram-Equalized Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <h2 id="26">5.</h2><pre class="codeinput">[Hist_img5] = myHE(im5);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(im5,[0,255]), title(<span class="string">'Original Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+subplot(1,2,2);
+imagesc(mat2gray(Hist_img5),[0,255]), title(<span class="string">'Histogram-Equalized Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <h2 id="28">6.</h2><pre class="codeinput">[Hist_img6] = myHE(im6);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(single(im6),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(single(Hist_img6),[0,255]), title(<span class="string">'Histogram-Equalized Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <h2 id="30">7.</h2><pre class="codeinput">[P,Q,R,S,BinaryMask] = myForegroundMask(im7,15);
+masked1 = uint8(im7 .* BinaryMask);
+[Hist_img7] = myHE(masked1);
+</pre><pre class="codeinput">subplot(1,2,1);
+imagesc(single(masked1),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+subplot(1,2,2);
+imagesc(single(Hist_img7),[0,255]), title(<span class="string">'Histogram-Equalized Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_14.png" alt=""> <h2 id="32">(d) Histogram Matching</h2><pre class="codeinput">tic;
+[Histm_img]= myHM(im4, im_ref);
+</pre><pre class="codeinput">subplot(1,3,1);
+imagesc(mat2gray(im4),[0,255]), title(<span class="string">'Original Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+subplot(1,3,2);
+imagesc(mat2gray(im_ref),[0,255]), title(<span class="string">'Reference Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+subplot(1,3,3);
+imagesc(mat2gray(Histm_img),[0,255]), title(<span class="string">'Histogram Matched Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_15.png" alt=""> <pre class="codeinput">subplot(1,3,1);
+imhist(im4(:,:,1)); title(<span class="string">'Original Image)'</span>)
+subplot(1,3,2);
+imhist(im_ref(:,:,1)); title(<span class="string">'Reference Image'</span>);
+subplot(1,3,3);
+imhist(Histm_img(:,:,1)); title(<span class="string">'Histogram Matched Image'</span>);
+
+[Hist_img4] = myHE(im4);
+</pre><img vspace="5" hspace="5" src="myMainScript_16.png" alt=""> <pre class="codeinput">figure;
+imagesc(mat2gray(Hist_img4),[0,255]), title(<span class="string">'Histogram Equalized Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_17.png" alt=""> <pre class="codeinput">subplot(2,3,1);
+imhist(Hist_img4(:,:,1));  title(<span class="string">'Histogram Equalized Image(Red)'</span>);
+subplot(2,3,2);
+imhist(Hist_img4(:,:,2));  title(<span class="string">'Histogram Equalized Image(Green)'</span>);
+subplot(2,3,3);
+imhist(Hist_img4(:,:,3));  title(<span class="string">'Histogram Equalized Image(Blue)'</span>);
+subplot(2,3,4);
+imhist(im4(:,:,1));  title(<span class="string">'Original Image(Red)'</span>);
+subplot(2,3,5);
+imhist(im4(:,:,2));  title(<span class="string">'Original Image(Green)'</span>);
+subplot(2,3,6);
+imhist(im4(:,:,3));  title(<span class="string">'Original Image (Blue)'</span>);
+
+toc;
+</pre><pre class="codeoutput">Elapsed time is 3.794705 seconds.
+</pre><img vspace="5" hspace="5" src="myMainScript_18.png" alt=""> <h2 id="37">(e) Contrast-Limited Adaptive Histogram Equalization (CLAHE)</h2><h2 id="38">extracting results using fine tuned parameters</h2><p>Window size = 50 and histogram threshold = 0.1</p><pre class="codeinput">tic;
+clahed_img1a = myCLAHE(im1,50,0.1);
+clahed_img2a = myCLAHE(im2,50,0.1);
+clahed_img3a = myCLAHE(im3,50,0.1);
+clahed_img6a = myCLAHE(im6,50,0.1);
+toc;
+</pre><pre class="codeoutput">Elapsed time is 328.390162 seconds.
+</pre><h2 id="39">The original image1 (barbara.png)</h2><pre class="codeinput">figure;
+imagesc(single(im1),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_19.png" alt=""> <h2 id="40">The Clahed image1 (barbara.png)</h2><pre class="codeinput">imagesc(single(clahed_img1a),[0,255]), title(<span class="string">'CLAHE Image'</span>), colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_20.png" alt=""> <h2 id="41">The original image2 (TEM.png)</h2><pre class="codeinput">imagesc(single(im2),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_21.png" alt=""> <h2 id="42">The Clahed  image2 (TEM.png)</h2><pre class="codeinput">imagesc(single(clahed_img2a),[0,255]), title(<span class="string">'CLAHE Image'</span>), colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_22.png" alt=""> <h2 id="43">The original image3 (canyon.png)</h2><pre class="codeinput">imagesc(mat2gray(im3),[0,255]), title(<span class="string">'Original Image'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_23.png" alt=""> <h2 id="44">The Clahed image3 (canyon.png)</h2><pre class="codeinput">imagesc(mat2gray(clahed_img3a),[0,255]), title(<span class="string">'CLAHE Image'</span>), colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_24.png" alt=""> <h2 id="45">The original image6 (chestXray.png)</h2><pre class="codeinput">imagesc(single(im6),[0,255]), title(<span class="string">'Original Image'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_25.png" alt=""> <h2 id="46">The Clahed image6 (chestXray.png)</h2><pre class="codeinput">imagesc(single(clahed_img6a),[0,255]), title(<span class="string">'CLAHE Image'</span>), colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_26.png" alt=""> <h2 id="47">Extracting results after varying Window Size parameter</h2><p>Window Size = {10,100} histogram threshold = 0.1</p><pre class="codeinput">tic;
+progress = waitbar(0,<span class="string">"Running Clahe Algorithm ..."</span>);
+clahed_img1b1 = myCLAHE(im1,10,0.1); waitbar(1/12);
+clahed_img1b2 = myCLAHE(im1,100,0.1); waitbar(3/12);
+clahed_img2b1 = myCLAHE(im2,10,0.1); waitbar(4/12);
+clahed_img2b2 = myCLAHE(im2,100,0.1); waitbar(6/12);
+clahed_img3b1 = myCLAHE(im3,10,0.1); waitbar(7/12);
+clahed_img3b2 = myCLAHE(im3,100,0.1); waitbar(9/12);
+clahed_img6b1 = myCLAHE(im6,10,0.1); waitbar(10/12);
+clahed_img6b2 = myCLAHE(im6,100,0.1); waitbar(12/12);
+delete(progress);
+toc;
+</pre><pre class="codeoutput">Elapsed time is 629.462163 seconds.
+</pre><h2 id="48">image1 with window size 100 (barbara.png)</h2><pre class="codeinput">imagesc(single(clahed_img1b1),[0,255]), title(<span class="string">'10 window size'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_27.png" alt=""> <h2 id="49">image1 with window size 100 (barbara.png)</h2><pre class="codeinput">imagesc(single(clahed_img1b2),[0,255]), title(<span class="string">'100 window size'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_28.png" alt=""> <h2 id="50">image2 with window size 10 (TEM.png)</h2><pre class="codeinput">imagesc(single(clahed_img2b1),[0,255]), title(<span class="string">'10 window size'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_29.png" alt=""> <h2 id="51">image2 with window size 100 (TEM.png)</h2><pre class="codeinput">imagesc(single(clahed_img2b2),[0,255]), title(<span class="string">'100 window size'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_30.png" alt=""> <h2 id="52">image3 with window size 10 (canyon.png)</h2><pre class="codeinput">imagesc(mat2gray(clahed_img3b1),[0,255]), title(<span class="string">'10 window size'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_31.png" alt=""> <h2 id="53">image3 with window size 100 (canyon.png)</h2><pre class="codeinput">imagesc(mat2gray(clahed_img3b2),[0,255]), title(<span class="string">'100 window size'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_32.png" alt=""> <h2 id="54">image6 with window size 10 (chestXray.png)</h2><pre class="codeinput">imagesc(single(clahed_img6b1),[0,255]), title(<span class="string">'10 window size'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_33.png" alt=""> <h2 id="55">image6 with window size 10 (chestXray.png)</h2><pre class="codeinput">imagesc(single(clahed_img6b2),[0,255]), title(<span class="string">'100 window size'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_34.png" alt=""> <h2 id="56">Observation for variation of window size parameter</h2><p>We can observe that as the window size is reduced we are more affected by the changes in the neighbourhood of a given pixel, the noise generated for a small window size here is not limited by the used threshold of 0.1 which lead to overall blurry and less detailed images.</p><h2 id="57">Extracting results for histogram threshold variation</h2><p>Window size = 50, histogram threshold = 0.05</p><pre class="codeinput">tic;
+clahed_img1c = myCLAHE(im1,50,0.05);
+clahed_img2c = myCLAHE(im2,50,0.05);
+clahed_img3c = myCLAHE(im3,50,0.05);
+clahed_img6c = myCLAHE(im6,50,0.05);
+toc;
+</pre><pre class="codeoutput">Elapsed time is 291.000383 seconds.
+</pre><h2 id="58">image1 with histogram threshold 0.1 (barbara.png)</h2><pre class="codeinput">imagesc(single(clahed_img1a),[0,255]), title(<span class="string">'0.1 histogram threshold'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_35.png" alt=""> <h2 id="59">image1 with histogram threshold 0.05 (barbara.png)</h2><pre class="codeinput">imagesc(single(clahed_img1c),[0,255]), title(<span class="string">'0.05 histogram threshold'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_36.png" alt=""> <h2 id="60">image2 with histogram threshold 0.1 (TEM.png)</h2><pre class="codeinput">imagesc(single(clahed_img2a),[0,255]), title(<span class="string">'0.1 histogram threshold'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_37.png" alt=""> <h2 id="61">image2 with histogram threshold 0.05 (TEM.png)</h2><pre class="codeinput">imagesc(single(clahed_img2c),[0,255]), title(<span class="string">'0.05 histogram threshold'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_38.png" alt=""> <h2 id="62">image3 with histogram threshold 0.1 (canyon.png)</h2><pre class="codeinput">imagesc(mat2gray(clahed_img3a),[0,255]), title(<span class="string">'0.1 histogram threshold'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_39.png" alt=""> <h2 id="63">image3 with histogram threshold 0.05 (canyon.png)</h2><pre class="codeinput">imagesc(mat2gray(clahed_img3c),[0,255]), title(<span class="string">'0.05 histogram threshold'</span>),daspect ([1 1 1]); axis <span class="string">tight</span>;
+</pre><img vspace="5" hspace="5" src="myMainScript_40.png" alt=""> <h2 id="64">image6 with histogram threshold 0.1 (chestXray.png)</h2><pre class="codeinput">imagesc(single(clahed_img6a),[0,255]), title(<span class="string">'0.1 histogram threshold'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_41.png" alt=""> <h2 id="65">image6 with histogram threshold 0.05 (chestXray.png)</h2><pre class="codeinput">imagesc(single(clahed_img6c),[0,255]), title(<span class="string">'0.05 histogram threshold'</span>),colormap(myColorScale),daspect ([1 1 1]); axis <span class="string">tight</span>; colorbar;
+</pre><img vspace="5" hspace="5" src="myMainScript_42.png" alt=""> <h2 id="66">Observations for variation of histogram threshold</h2><p>it is harder to see significant changes in this variation but we can still observe in the image1 (barbara.png) the shadows are slightly darker and sharp. since as the histogram threshold gets smaller it leads to more distributions of intensities across all bins of histogram</p><h2 id="67">THE END</h2><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% myMainScript
+clear;
+myNumOfColors = 255;
+myColorScale = [ [0:1/(myNumOfColors-1):1]',[0:1/(myNumOfColors-1):1]' , [0:1/(myNumOfColors-1):1]' ];
+%% Reading images
+im1 = imread('../data/barbara.png');
+im2 = imread('../data/TEM.png');
+im3 = imread('../data/canyon.png');
+im4 = imread('../data/retina.png');
+im5 = imread('../data/church.png');
+im6 = imread('../data/chestXray.png');
+im7 = imread('../data/statue.png');
+im_ref= imread('../data/retinaRef.png');
+
+
+%% (a) ForegroundMask
+% Threshhold intensity = 8
+[fore_img, fore_img1 ,masked_img,masked_img1] = myForegroundMask(im7,8);
+%% 
+subplot(1,3,1);
+imagesc(single(im7),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+subplot(1,3,2);
+imagesc(single(fore_img),[0,255]), title('Binary Mask'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+subplot(1,3,3);
+imagesc(single(fore_img1),[0,255]), title('Binary Mask(with Noise reduction)'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+ 
+
+%%
+subplot(1,2,1);
+imagesc(single(masked_img),[0,255]), title('Masked Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+subplot(1,2,2);
+imagesc(single(masked_img1),[0,255]), title('Masked Image with different background'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+ 
+
+%% (b) Linear Contrast Stretching
+%Formula
+%% 1.
+[cont_img1] = myLinearContrastStretching(im1);
+%%
+subplot(1,2,1);
+imagesc(single(im1),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+subplot(1,2,2);
+imagesc(single(cont_img1),[0,255]), title('Contrast-Enhanced Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+ 
+
+%% 2.
+[cont_img2] = myLinearContrastStretching(im2);
+%%
+subplot(1,2,1);
+imagesc(im2,[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+subplot(1,2,2);
+imagesc(cont_img2,[0,255]), title('Contrast-Enhanced Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+ 
+
+%% 3.
+[cont_img3] = myLinearContrastStretching(im3);
+%%
+subplot(1,2,1);
+imagesc(im3,[0,255]), title('Original Image'),daspect ([1 1 1]); axis tight; 
+subplot(1,2,2);
+imagesc(mat2gray(cont_img3),[0,255]), title('Contrast-Enhanced Image'),daspect ([1 1 1]); axis tight;
+ 
+
+%% 5.
+[cont_img5] = myLinearContrastStretching(im5);
+%%
+subplot(1,2,1);
+imagesc(im5,[0,255]), title('Original Image'),daspect ([1 1 1]); axis tight;
+subplot(1,2,2);
+imagesc(mat2gray(cont_img5),[0,255]), title('Contrast-Enhanced Image'),daspect ([1 1 1]); axis tight; 
+ 
+
+%% 6.
+[cont_img6] = myLinearContrastStretching(im6);
+%%
+subplot(1,2,1);
+imagesc(single(im6),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+subplot(1,2,2);
+imagesc(single(cont_img6),[0,255]), title('Contrast-Enhanced Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+ 
+
+%% 7.
+[P,Q,R,S,BinaryMask] = myForegroundMask(im7,15);
+masked = uint8(im7 .* BinaryMask);
+[cont_img7] = myLinearContrastStretching(masked);
+%%
+subplot(1,2,1);
+imagesc(single(masked),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+subplot(1,2,2);
+imagesc(single(cont_img7),[0,255]), title('Contrast-Enhanced Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+ 
+
+%% (c) Histogram Equalization
+
+%% 1.
+[Hist_img1] = myHE(im1);
+%%
+subplot(1,2,1);
+imagesc(single(im1),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+subplot(1,2,2);
+imagesc(single(Hist_img1),[0,255]), title('Histogram-Equalized Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+ 
+
+%% 2.
+[Hist_img2] = myHE(im2);
+%%
+subplot(1,2,1);
+imagesc(single(im2),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+subplot(1,2,2);
+imagesc(single(Hist_img2),[0,255]), title('Histogram-Equalized Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+ 
+
+%% 3.
+[Hist_img3] = myHE(im3);
+%%
+subplot(1,2,1);
+imagesc(im3,[0,255]), title('Original Image'),daspect ([1 1 1]); axis tight;
+subplot(1,2,2);
+imagesc(mat2gray(Hist_img3),[0,255]), title('Histogram-Equalized Image'),daspect ([1 1 1]); axis tight;
+ 
+
+%% 5.
+[Hist_img5] = myHE(im5);
+%%
+subplot(1,2,1);
+imagesc(im5,[0,255]), title('Original Image'),daspect ([1 1 1]); axis tight; 
+subplot(1,2,2);
+imagesc(mat2gray(Hist_img5),[0,255]), title('Histogram-Equalized Image'),daspect ([1 1 1]); axis tight; 
+ 
+
+%% 6.
+[Hist_img6] = myHE(im6);
+%%
+subplot(1,2,1);
+imagesc(single(im6),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+subplot(1,2,2);
+imagesc(single(Hist_img6),[0,255]), title('Histogram-Equalized Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+ 
+
+%% 7.
+[P,Q,R,S,BinaryMask] = myForegroundMask(im7,15);
+masked1 = uint8(im7 .* BinaryMask);
+[Hist_img7] = myHE(masked1);
+%%
+subplot(1,2,1);
+imagesc(single(masked1),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar; 
+subplot(1,2,2);
+imagesc(single(Hist_img7),[0,255]), title('Histogram-Equalized Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+ 
+
+
+%% (d) Histogram Matching
+tic;
+[Histm_img]= myHM(im4, im_ref);
+%% 
+subplot(1,3,1);
+imagesc(mat2gray(im4),[0,255]), title('Original Image'),daspect ([1 1 1]); axis tight; 
+subplot(1,3,2);
+imagesc(mat2gray(im_ref),[0,255]), title('Reference Image'),daspect ([1 1 1]); axis tight; 
+subplot(1,3,3);
+imagesc(mat2gray(Histm_img),[0,255]), title('Histogram Matched Image'),daspect ([1 1 1]); axis tight; 
+%%
+subplot(1,3,1);
+imhist(im4(:,:,1)); title('Original Image)')
+subplot(1,3,2);
+imhist(im_ref(:,:,1)); title('Reference Image');
+subplot(1,3,3);
+imhist(Histm_img(:,:,1)); title('Histogram Matched Image');
+
+[Hist_img4] = myHE(im4);
+%%
+figure;
+imagesc(mat2gray(Hist_img4),[0,255]), title('Histogram Equalized Image'),daspect ([1 1 1]); axis tight;
+%%
+subplot(2,3,1);
+imhist(Hist_img4(:,:,1));  title('Histogram Equalized Image(Red)');
+subplot(2,3,2);
+imhist(Hist_img4(:,:,2));  title('Histogram Equalized Image(Green)');
+subplot(2,3,3);
+imhist(Hist_img4(:,:,3));  title('Histogram Equalized Image(Blue)');
+subplot(2,3,4);
+imhist(im4(:,:,1));  title('Original Image(Red)');
+subplot(2,3,5);
+imhist(im4(:,:,2));  title('Original Image(Green)');
+subplot(2,3,6);
+imhist(im4(:,:,3));  title('Original Image (Blue)');
+
+toc;
+%% (e) Contrast-Limited Adaptive Histogram Equalization (CLAHE)
+
+%% extracting results using fine tuned parameters
+% Window size = 50 and histogram threshold = 0.1
+tic;
+clahed_img1a = myCLAHE(im1,50,0.1); 
+clahed_img2a = myCLAHE(im2,50,0.1); 
+clahed_img3a = myCLAHE(im3,50,0.1); 
+clahed_img6a = myCLAHE(im6,50,0.1);
+toc;
+%% The original image1 (barbara.png)
+figure;
+imagesc(single(im1),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% The Clahed image1 (barbara.png)
+imagesc(single(clahed_img1a),[0,255]), title('CLAHE Image'), colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% The original image2 (TEM.png)
+imagesc(single(im2),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% The Clahed  image2 (TEM.png)
+imagesc(single(clahed_img2a),[0,255]), title('CLAHE Image'), colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% The original image3 (canyon.png)
+imagesc(mat2gray(im3),[0,255]), title('Original Image'),daspect ([1 1 1]); axis tight;
+%% The Clahed image3 (canyon.png)
+imagesc(mat2gray(clahed_img3a),[0,255]), title('CLAHE Image'), colormap(myColorScale),daspect ([1 1 1]); axis tight;
+
+%% The original image6 (chestXray.png)
+imagesc(single(im6),[0,255]), title('Original Image'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% The Clahed image6 (chestXray.png)
+imagesc(single(clahed_img6a),[0,255]), title('CLAHE Image'), colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% Extracting results after varying Window Size parameter
+% Window Size = {10,100} histogram threshold = 0.1
+tic;
+progress = waitbar(0,"Running Clahe Algorithm ...");
+clahed_img1b1 = myCLAHE(im1,10,0.1); waitbar(1/12);
+clahed_img1b2 = myCLAHE(im1,100,0.1); waitbar(3/12);
+clahed_img2b1 = myCLAHE(im2,10,0.1); waitbar(4/12);
+clahed_img2b2 = myCLAHE(im2,100,0.1); waitbar(6/12);
+clahed_img3b1 = myCLAHE(im3,10,0.1); waitbar(7/12);
+clahed_img3b2 = myCLAHE(im3,100,0.1); waitbar(9/12);
+clahed_img6b1 = myCLAHE(im6,10,0.1); waitbar(10/12);
+clahed_img6b2 = myCLAHE(im6,100,0.1); waitbar(12/12);
+delete(progress);
+toc;
+%% image1 with window size 100 (barbara.png)
+imagesc(single(clahed_img1b1),[0,255]), title('10 window size'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+%% image1 with window size 100 (barbara.png)
+imagesc(single(clahed_img1b2),[0,255]), title('100 window size'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% image2 with window size 10 (TEM.png) 
+imagesc(single(clahed_img2b1),[0,255]), title('10 window size'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+%% image2 with window size 100 (TEM.png) 
+imagesc(single(clahed_img2b2),[0,255]), title('100 window size'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% image3 with window size 10 (canyon.png) 
+imagesc(mat2gray(clahed_img3b1),[0,255]), title('10 window size'),daspect ([1 1 1]); axis tight;
+%% image3 with window size 100 (canyon.png) 
+imagesc(mat2gray(clahed_img3b2),[0,255]), title('100 window size'),daspect ([1 1 1]); axis tight;
+%% image6 with window size 10 (chestXray.png)
+imagesc(single(clahed_img6b1),[0,255]), title('10 window size'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+%% image6 with window size 10 (chestXray.png) 
+imagesc(single(clahed_img6b2),[0,255]), title('100 window size'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% Observation for variation of window size parameter
+% We can observe that as the window size is reduced we are more affected by
+% the changes in the neighbourhood of a given pixel, the noise generated
+% for a small window size here is not limited by the used threshold of 0.1
+% which lead to overall blurry and less detailed images.
+
+%% Extracting results for histogram threshold variation
+% Window size = 50, histogram threshold = 0.05
+tic;
+clahed_img1c = myCLAHE(im1,50,0.05);
+clahed_img2c = myCLAHE(im2,50,0.05);
+clahed_img3c = myCLAHE(im3,50,0.05);
+clahed_img6c = myCLAHE(im6,50,0.05);
+toc;
+
+%% image1 with histogram threshold 0.1 (barbara.png)
+imagesc(single(clahed_img1a),[0,255]), title('0.1 histogram threshold'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+%% image1 with histogram threshold 0.05 (barbara.png)
+imagesc(single(clahed_img1c),[0,255]), title('0.05 histogram threshold'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% image2 with histogram threshold 0.1 (TEM.png)
+imagesc(single(clahed_img2a),[0,255]), title('0.1 histogram threshold'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+%% image2 with histogram threshold 0.05 (TEM.png)
+imagesc(single(clahed_img2c),[0,255]), title('0.05 histogram threshold'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% image3 with histogram threshold 0.1 (canyon.png)
+imagesc(mat2gray(clahed_img3a),[0,255]), title('0.1 histogram threshold'),daspect ([1 1 1]); axis tight;
+%% image3 with histogram threshold 0.05 (canyon.png)
+imagesc(mat2gray(clahed_img3c),[0,255]), title('0.05 histogram threshold'),daspect ([1 1 1]); axis tight; 
+
+%% image6 with histogram threshold 0.1 (chestXray.png)
+imagesc(single(clahed_img6a),[0,255]), title('0.1 histogram threshold'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+%% image6 with histogram threshold 0.05 (chestXray.png)
+imagesc(single(clahed_img6c),[0,255]), title('0.05 histogram threshold'),colormap(myColorScale),daspect ([1 1 1]); axis tight; colorbar;
+
+%% Observations for variation of histogram threshold
+% it is harder to see significant changes in this variation but we can
+% still observe in the image1 (barbara.png) the shadows are slightly darker
+% and sharp. since as the histogram threshold gets smaller it leads to more
+% distributions of intensities across all bins of histogram
+
+%% THE END
+
+
+##### SOURCE END #####
+--></body></html>
